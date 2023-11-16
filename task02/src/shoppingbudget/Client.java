@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
+import static shoppingbudget.Constants.*;
 
 public class Client{
     public static void main(String[] args) throws Exception{
@@ -75,21 +76,21 @@ public class Client{
             }
 
             line = br.readLine().trim();
-            
-            if (line.equals("prod_list") || line.length() <= 0){
+
+            if (line.equals(PROD_LIST) || line.length() <= 0){
                 continue;
             }
-            else if (line.startsWith("request_id")){
+            else if (line.startsWith(REQUEST_ID)){
                 requestID = getInfo(line);
             }
-            else if (line.startsWith("item_count")){
+            else if (line.startsWith(ITEM_COUNT)){
                 itemCount = Integer.parseInt(getInfo(line));
                 products = new ProductBasket(itemCount);
             }
-            else if (line.startsWith("budget")){
+            else if (line.startsWith(BUDGET)){
                 budget = Float.parseFloat(getInfo(line));
             }
-            else if (line.equals("prod_start")){
+            else if (line.equals(PROD_START)){
                 String id = null;
                 String name = null;
                 float price = -1f;
@@ -99,20 +100,20 @@ public class Client{
                     if (line.length() <= 0){
                         continue;
                     }
-                    else if (line.startsWith("prod_end")){
+                    else if (line.startsWith(PROD_END)){
                         itemCount--;
                         break;
                     }
-                    else if (line.startsWith("prod_id")){
+                    else if (line.startsWith(PROD_ID)){
                         id = getInfo(line);
                     }
-                    else if (line.startsWith("title")){
+                    else if (line.startsWith(TITLE)){
                         name = getInfo(line);
                     }
-                    else if (line.startsWith("price")){
+                    else if (line.startsWith(PRICE)){
                         price = Float.parseFloat(getInfo(line));
                     }
-                    else if (line.startsWith("rating")){
+                    else if (line.startsWith(RATING)){
                         Float.parseFloat(getInfo(line));
                     }
                 }
