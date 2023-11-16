@@ -9,7 +9,7 @@ import static googleplay.Constants.*;
 public class Main{
     public static void main(String[] args) throws Exception{
         if (args.length <= 0){
-            System.out.println("Please provide a Google Play csv file for the program to run!");
+            System.err.println("Please provide a Google Play csv file for the program to run!");
             return;
         }
 
