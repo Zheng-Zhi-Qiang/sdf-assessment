@@ -10,27 +10,13 @@ import java.util.List;
 import static shoppingbudget.Constants.*;
 
 public class Client{
-    public static void main(String[] args) throws Exception{
-        String server = "localhost";
-        Integer port = 3000;
+    private Socket client;
+    
+    public Client(Socket client){
+        this.client = client;
+    }
 
-        if (args.length > 2){
-            System.err.println("Too many arguments provided!");
-            return;
-        }
-        else{
-            if (args.length == 1){
-                port = Integer.parseInt(args[0]);
-            }
-            else if (args.length == 2){
-                server = args[0];
-                port = Integer.parseInt(args[1]);
-            }
-        }
-
-        System.out.printf("Connecting to %s on port %d...\n", server, port);
-        Socket client = new Socket(server, port);
-        System.out.println("Connected!");
+    public void start() throws Exception{
 
         InputStream is = client.getInputStream();
         InputStreamReader isr = new InputStreamReader(is);
