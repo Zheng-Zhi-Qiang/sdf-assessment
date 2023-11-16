@@ -40,30 +40,87 @@ public class Client{
         BufferedWriter bw = new BufferedWriter(osw);
 
 
-        String requestID = getInfo(br.readLine().trim());
-        int itemCount = Integer.parseInt(getInfo(br.readLine().trim()));
-        float budget = Float.parseFloat(getInfo(br.readLine().trim()));
-        ProductBasket products = new ProductBasket(itemCount);
+        // String requestID = getInfo(br.readLine().trim());
+        // int itemCount = Integer.parseInt(getInfo(br.readLine().trim()));
+        // float budget = Float.parseFloat(getInfo(br.readLine().trim()));
+        // ProductBasket products = new ProductBasket(itemCount);
+        
+        // String line;
+        // while (itemCount != 0){
+        //     line = br.readLine().trim();
+        //     if (line.equals("prod_list") || line.length() <= 0){
+        //         continue;
+        //     }
+        //     else if (line.equals("prod_start")){
+        //         String id = getInfo(br.readLine().trim());
+        //         String name = getInfo(br.readLine().trim());
+        //         float price = Float.parseFloat(getInfo(br.readLine().trim()));
+        //         float rating = Float.parseFloat(getInfo(br.readLine().trim()));
+        //         products.addProduct(new Product(id, name, rating, price));
+        //     }
+        //     else if (line.equals("prod_end")){
+        //         itemCount--;
+        //     }
+        // }s
+        
+        String requestID = null;
+        int itemCount = -1; // using -1 as not initialized, assuming that item count will always be positive
+        float budget = -1;
+        ProductBasket products = null;
         
         String line;
-        while (itemCount != 0){
+        while (true){
+            if (itemCount == 0){
+                break;
+            }
+
             line = br.readLine().trim();
             
             if (line.equals("prod_list") || line.length() <= 0){
                 continue;
             }
+            else if (line.startsWith("request_id")){
+                requestID = getInfo(line);
+            }
+            else if (line.startsWith("item_count")){
+                itemCount = Integer.parseInt(getInfo(line));
+                products = new ProductBasket(itemCount);
+            }
+            else if (line.startsWith("budget")){
+                budget = Float.parseFloat(getInfo(line));
+            }
             else if (line.equals("prod_start")){
-                String id = getInfo(br.readLine().trim());
-                String name = getInfo(br.readLine().trim());
-                float price = Float.parseFloat(getInfo(br.readLine().trim()));
-                float rating = Float.parseFloat(getInfo(br.readLine().trim()));
+                String id = null;
+                String name = null;
+                float price = -1f;
+                float rating = -1f;
+                while (true){
+                    line = br.readLine().trim();
+                    if (line.length() <= 0){
+                        continue;
+                    }
+                    else if (line.startsWith("prod_end")){
+                        itemCount--;
+                        break;
+                    }
+                    else if (line.startsWith("prod_id")){
+                        id = getInfo(line);
+                    }
+                    else if (line.startsWith("title")){
+                        name = getInfo(line);
+                    }
+                    else if (line.startsWith("price")){
+                        price = Float.parseFloat(getInfo(line));
+                    }
+                    else if (line.startsWith("rating")){
+                        Float.parseFloat(getInfo(line));
+                    }
+                }
                 products.addProduct(new Product(id, name, rating, price));
             }
-            else if (line.equals("prod_end")){
-                itemCount--;
-            }
         }
-        
+
+
         products.sort();
         List<Product> itemsToGet = products.getItemsWithBudget(budget);
         float budgedUsed = products.getBudgetUsed(itemsToGet);
